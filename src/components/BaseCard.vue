@@ -1,5 +1,5 @@
 <template>
-    <div class="flex-col bg-secondary rounded-2xl items-center">
+    <div class="bg-secondary rounded-2xl">
         <slot />
     </div>
 </template>

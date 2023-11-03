@@ -22,17 +22,20 @@
                 </li>
             </ul>
         </div>
+        <Suspense>
+            <SavedLocationList />
+        </Suspense>
     </main>
 </template>
 
 <script setup lang="ts">
 import { ref, type Ref } from "vue";
-import Vue from "vue";
 import type { Location } from "@/model/Location";
 import { useRouter } from "vue-router";
-import { RepositoryImpl } from "@/repository/RepositoryImpl";
+import { container, TOKENS } from "@/di";
+import SavedLocationList from "./SavedLocationList.vue";
 
-const repository = new RepositoryImpl();
+const weatherRepo = container.get(TOKENS.WeatherRepository)
 
 const searchQuery = ref("");
 const queryTimeout: Ref<number | null> = ref(null);
@@ -45,7 +48,7 @@ const getSearchResults = () => {
     queryTimeout.value = setTimeout(async () => {
         if (searchQuery.value != "") {
             const data: Location[] = (
-                await repository.getSearch(searchQuery.value)
+                await weatherRepo.getSearch(searchQuery.value)
             ).data;
             locationSearchResults.value = data;
         } else {
@@ -66,3 +69,4 @@ const navToWeather = (location: Location) => {
     });
 };
 </script>
+@/repository/WeatherRepositoryImpl
